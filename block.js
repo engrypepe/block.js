@@ -425,4 +425,89 @@ const LibraryCreator = {
 //////////////////////////////////////
   ]
   
+  const blocks = [
+//////////////////////////////////////
+    {
+      name: 'firsttext', // 이름 지정
+      template: '%1', // 표시할 내용
+      skeleton: 'basic_text', // 형식(기본 텍스트)
+      color: { // 색깔
+        default: EntryStatic.colorSet.common.TRANSPARENT, // 투명
+        darken: EntryStatic.colorSet.common.TRANSPARENT // 투명
+      },
+      params: [ // %n의 형식 지정
+        { // %1의 형식 정의
+          type: 'Text', // 텍스트 형식
+          text: 'Web', // 표시 내용
+          color: EntryStatic.colorSet.common.TEXT, // 검은색
+          align: 'center'
+        }
+      ],
+      def: [],
+      map: {},
+      class: 'text'
+    },
+//////////////////////////////////////
+
+//////////////////////////////////////
+    {
+      name: 'get ip', // 블럭 이름 지정
+      template: '%1 내용을 구글에 검색하기%2', // 표시할 내용
+      skeleton: 'basic', // 블럭 형식(basic은 일반 블럭)
+      color: { // 색깔
+        default: '#009933', //RGB 색깔
+        darken: '#336600' //RGB 색깔
+      },
+      params: [ // %n 정의
+        { // %1 정의
+          type: 'Block', // 형식 지정(입력값)
+          accept: 'string'
+        },
+        { // %2 정의
+          type: 'Indicator', // 형식 지정(이미지)
+          img: '', // 이미지 링크
+          size: 11, // 크기
+        }
+      ],
+      def: [ // %n 기본값
+        { // %1 정의
+          type: 'text',
+          params: ['엔트리'] // 기본으로 입력된 값
+        },
+        null // %2 정의(이미지 형식이므로 null로 설정)
+      ],
+      map: {
+        SEARCHRESULT: 0 // %1의 입력값을 불러올 변수 이름(대문자)
+      },
+      class: 'text',
+      func: async (sprite, script) => { // 실행할 JS 코드
+        // script.getValue('위에 map에서 설정한 변수 이름', script) 이 코드로 입력값 로드 가능
+        <style>
+  #client-ip {
+    color: #ff80ab;
+  }
+</style>
+
+<div>이 컴퓨터의 IP 주소: <span id="client-ip"></span></div>
+
+<script>
+  // HTML의 <script> 요소를 생성한다
+  const se = document.createElement('script');
+  // <script> 요소의 src 속성을 설정한다
+  se.src = 'https://ipinfo.io?callback=callback';
+  // <body> 요소의 하위 끝에 붙인다
+  // 그리고 콜백 함수를 호출한다
+  document.body.appendChild(se);
+  // 앞서 생성한 <script> 요소를 제거한다
+  document.body.removeChild(se);
+
+  // 콜백 함수가 호출된다
+  function callback(data) {
+    document.getElementById('client-ip').textContent = data.ip;
+  } return script.callReturn() // 일반 블럭 코드 뒤에는 반드시 붙여주세요
+      },
+    }
+//////////////////////////////////////
+  ]
+  
   LibraryCreator.start(blocks, 'API', '페페블럭')
